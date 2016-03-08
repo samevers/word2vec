@@ -99,12 +99,12 @@ int main(int argc, char **argv) {
     return -1;
   }
   for (b = 0; b < words; b++) {
-    fscanf(f, "%s%c", &vocab[b * max_w], &ch);
-    for (a = 0; a < size; a++) fread(&M[a + b * size], sizeof(float), 1, f);
+    fscanf(f, "%s%c", &vocab[b * max_w], &ch);								// 从文件 f 中读取一个bigram词，即一行中的《词》数据
+    for (a = 0; a < size; a++) fread(&M[a + b * size], sizeof(float), 1, f); // 从文件f 中读取一个size 大小的向量，放在M 的a+b*size 的位置；
     len = 0;
-    for (a = 0; a < size; a++) len += M[a + b * size] * M[a + b * size];
-    len = sqrt(len);
-    for (a = 0; a < size; a++) M[a + b * size] /= len;
+    for (a = 0; a < size; a++) len += M[a + b * size] * M[a + b * size];	// 取所有向量元素的平方，进行加和
+    len = sqrt(len);														// 再取平方根, 进而
+    for (a = 0; a < size; a++) M[a + b * size] /= len;					// 对 M 进行归一化
   }
   fclose(f);
 
@@ -112,13 +112,13 @@ int main(int argc, char **argv) {
   char pre[max_size];
   char bigram[max_size];
 
+  // 对于输入的一串string 内容
   while (fgets(st1,max_size,stdin)) {	// 输入字符串
     for (a = 0; a < N; a++) bestd[a] = 0;
     for (a = 0; a < N; a++) bestw[a][0] = 0;
     a = 0;
 	if(strcmp(st1, "") == 0)
 		break;
-    if (!strcmp(st1, "")) break;
 	st1[strlen(st1)-1] = '\0';
 	printf("------------%s\n", st1);
     cn = 0;
