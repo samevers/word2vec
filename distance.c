@@ -161,7 +161,7 @@ int main(int argc, char **argv) {
     printf("\n            Word       Cosine distance\n------------------------------------------------------------------------\n");
     for (a = 0; a < size; a++) vec[a] = 0;// vocab中的所有词初始化
 	printf("-----7.1\n");
-    for (b = 0; b < cn; b++) {
+    for (b = 0; b < cn -1; b++) {		// 因为上面已经知道bi中只有cn-1 个bigram，所以这里也同样需要将bi 的上限设置在cn-1；否则会报'段错误'
 	printf("-----7.11\n");
       if (bi[b] == -1) continue;
 	printf("-----7.12\n");
@@ -178,7 +178,7 @@ int main(int argc, char **argv) {
 	printf("-----7.5\n");
     for (c = 0; c < words; c++) {
       a = 0;
-      for (b = 0; b < cn; b++) if (bi[b] == c) {a = 1; break;}
+      for (b = 0; b < cn -1; b++) if (bi[b] == c) {a = 1; break;}	// 同样的，bi的b元素需要按照上面的数组大小进行限制；
       if (a == 1) continue;
       dist = 0;
       for (a = 0; a < size; a++) dist += vec[a] * M[a + c * size];
