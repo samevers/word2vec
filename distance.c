@@ -120,48 +120,40 @@ int main(int argc, char **argv) {
 	if(strcmp(st1, "") == 0)
 		break;
 	st1[strlen(st1)-1] = '\0';
-	printf("------------%s\n", st1);
+	printf("------------%s\n", st1);	// st1 是输入的一行string 串
     cn = 0;
     b = 0;
     c = 0;
     while (1) {
-      st[cn][b] = st1[c];
+      st[cn][b] = st1[c];	// 将st1 存放到二维char 数组 st 中
       b++;
       c++;
       st[cn][b] = 0;
       if (st1[c] == 0) break;
-      if (st1[c] == ' ') {
-        cn++;
+      if (st1[c] == ' ') {	// 以空格为标记将st1 切分成term
+        cn++;				// cn 为st1 中term 的数量
         b = 0;
         c++;
       }
     }
     cn++;
-	printf("-----1\n");
     for (a = 0; a < cn; a++) {
 	  if(a == 0)
 	  {
-	  	  Trans2CharArray(pre, st[a]);
-	printf("-----2\n");
+	  	  Trans2CharArray(pre, st[a]); // 前一个词term
 		  continue;
 	  }
-	  Trans2CharArray(word, st[a]);
-	printf("-----3\n");
-	  //word = st[a];
-	  combineBigram(pre, st[a], bigram);
-	printf("-----4\n");
-      for (b = 0; b < words; b++) if (!strcmp(&vocab[b * max_w], bigram)) break;
-      if (b == words) b = -1;
-      bi[a] = b;// 第 a 个bigram 在vocab的第b个位置
+	  Trans2CharArray(word, st[a]);		// 当前一个词term
+	  combineBigram(pre, st[a], bigram);// 构成 bigram term
+      for (b = 0; b < words; b++) if (!strcmp(&vocab[b * max_w], bigram)) break; // 再vocab 词典中查找bigram，若存在该bigram，则跳出；
+      if (b == words) b = -1;			// vocab 词典中找不到该bigram
+      bi[a-1] = b;						// 第 a 个bigram 在vocab的第b个位置; 另外，这里之所以要a-1，是因为bigram 只有a-1 个
       printf("\nWord: %s  Position in vocabulary: %lld\n", bigram, bi[a]);
       if (b == -1) {
         printf("Out of dictionary word!\n");
         break;
       }
-	  //pre = word;
-	printf("-----5\n");
 	  Trans2CharArray(pre, word);
-	printf("-----6\n");
     }
 	printf("-----7\n");
     //if (b == -1) continue;
