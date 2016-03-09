@@ -152,30 +152,24 @@ int main(int argc, char **argv) {
       printf("\nWord: %s  Position in vocabulary: %lld\n", bigram, bi[a]);
       if (b == -1) {
         printf("Out of dictionary word!\n");
-        break;
+        //break; 	// b=-1 的时候不能跳出，后面在访问bi 的时候会报 '段错误'
       }
 	  Trans2CharArray(pre, word);
     }
-	printf("-----7\n");
     //if (b == -1) continue;
-    printf("\n            Word       Cosine distance\n------------------------------------------------------------------------\n");
     for (a = 0; a < size; a++) vec[a] = 0;// vocab中的所有词初始化
-	printf("-----7.1\n");
-    for (b = 0; b < cn -1; b++) {		// 因为上面已经知道bi中只有cn-1 个bigram，所以这里也同样需要将bi 的上限设置在cn-1；否则会报'段错误'
-	printf("-----7.11\n");
-      if (bi[b] == -1) continue;
-	printf("-----7.12\n");
-      for (a = 0; a < size; a++) vec[a] += M[a + bi[b] * size];
-	printf("-----7.13\n");
+	for (b = 0; b < cn -1; b++) {		// 因为上面已经知道bi中只有cn-1 个bigram，所以这里也同样需要将bi 的上限设置在cn-1；否则会报'段错误'
+        if (bi[b] == -1) continue;
+        for (a = 0; a < size; a++) {
+			vec[a] += M[a + bi[b] * size];
+		}
     }
-	printf("-----7.2\n");
     len = 0;
     for (a = 0; a < size; a++) len += vec[a] * vec[a];
     len = sqrt(len);
     for (a = 0; a < size; a++) vec[a] /= len;
     for (a = 0; a < N; a++) bestd[a] = 0;
     for (a = 0; a < N; a++) bestw[a][0] = 0;
-	printf("-----7.5\n");
     for (c = 0; c < words; c++) {
       a = 0;
       for (b = 0; b < cn -1; b++) if (bi[b] == c) {a = 1; break;}	// 同样的，bi的b元素需要按照上面的数组大小进行限制；
@@ -194,14 +188,12 @@ int main(int argc, char **argv) {
         }
       }
     }
-	printf("-----8\n");
     for (a = 0; a < N; a++) 
 	{
 		if(bestw[a] == "" || bestd[a] == 0)
 			continue;
 		printf("%s:%f\t", bestw[a], bestd[a]);
 	}
-	printf("-----9\n");
 	printf("\n");// del
 	st1[0] = '\0';
 

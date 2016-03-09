@@ -146,7 +146,7 @@ st1[strlen(st1)-1] = '\0';
       //printf("\nWord: %s  Position in vocabulary: %lld\n", st[a], bi[a]);
       if (b == -1) {
         //printf("Out of dictionary word!\n");
-        break;
+        //break;
       }
     }
 	printf("===7\n");
